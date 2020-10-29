@@ -114,7 +114,7 @@ function addRole () {
             connection.query(
                 "INSERT INTO role SET?",
                 {
-                  title: answer.roleTitle, //! unknown column error?
+                  title: answer.roleTitle, s
                   salary: answer.roleSalary,
                   departmentId: answer.departmentId,
                 },

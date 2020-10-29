@@ -36,11 +36,11 @@ Not Applicable
 
 ## Technologies Used
 
-NPM - Inquirer Package, Express, Heroku
+mySQL, inquirer, console.table
 
 ## Problems I faced
 
-I had issues with file mapping, delete & post functionality 
+I struggled with the update employee role functionality - but it worked out 
 
 ## Credits
 
@@ -50,9 +50,7 @@ Ryan Witherspoon
 ![image info](./images/homework_10_screengrab.png)
 
 ## Links
-[link to GitHub!](https://github.com/ryanwit/homework_11_note_taker)
-
-[link to Heroku!](https://whispering-retreat-20482.herokuapp.com/notes)
+[link to GitHub!](https://github.com/ryanwit/homework_12_employee_management_system)
 
 [link to Screencastify Demo!](https://drive.google.com/file/d/1FJeGrao22fnT_hSq9LdgWKugGTYxdVLr/view)
 

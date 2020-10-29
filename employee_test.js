@@ -10,13 +10,21 @@ const connection = mysql.createConnection({ //*createConnection is built in thro
     database: "employee_tracker_db" //*information needed to create connection - reference the db from mysql
 });
 
-connection.connect(err => {
-    if(err) throw err;
-    console.log(`connect as id ${connection.threadId}`);
+// connection.connect(err => {
+//     if(err) throw err;
+//     console.log(`connect as id ${connection.threadId}`);
 
-});
+// });
 
+// pageLoad();
 
+// function pageLoad() {
+//     var logoText = logo({ name: "RYRY MGMT"}.render());
+//     console.log(logoText);
+//     start();
+// }
+
+start();
 
 function start() {
     inquirer
@@ -29,9 +37,8 @@ function start() {
                 "View All Employees Roles",
                 "Add Role",
                 "Add Employee",
-                "Remove Employee",
+                "Add Department",
                 "Update Employee Role",
-                "Update Employee Manager",
                 "Exit"
             ]
         })
@@ -49,14 +56,11 @@ function start() {
                 case"Add Employee":
                     addEmployee();
                     break;
-                case"Remove Employee":
-                    removeEmployee();
+                case"Add Department":
+                    addDepartment();
                     break;
                 case "Update Employee Role":
                     updateEmployeeRole();
-                    break;
-                case "Update Employee Manager":
-                    updateEmployeeManager();
                     break;
                     default:
                     connection.end();
@@ -65,22 +69,65 @@ function start() {
 
 }
 
-start();
+/* --------------------------- view all employees --------------------------- */
 
 function viewAllEmployees () {
-    connection.query("SELECT * FROM employees", (err, res) => {
+    connection.query("SELECT employees.firstName, employees.lastName, role.title, role.salary FROM employees LEFT JOIN role ON employees.roleId = role.id;", (err, res) => {
         if(err) throw err;
             console.table(res);
-            connection.end();
+            start();
         });
 }
+
+/* ----------------------------- view all roles ----------------------------- */
 
 function viewAllEmployeesRoles () {
     connection.query("SELECT department.departmentName AS department, role.title FROM role LEFT JOIN department on role.departmentId = department.id;", (err, res) => {
         if(err) throw err;
         console.table(res);
+        start();
         });
 }
+
+/* -------------------------------- add role -------------------------------- */
+
+function addRole () {
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                message: "What is the title of the role?",
+                name: "roleTitle"
+            },
+            {
+                type: "input",
+                message: "What is salary of the role?",
+                name: "roleSalary"
+            },
+            {
+                type: "input",
+                message: "What is the department Id?",
+                name: "departmentId"
+            },
+        ])
+        .then(function(answer){
+            connection.query(
+                "INSERT INTO role SET?",
+                {
+                  title: answer.roleTitle, //! unknown column error?
+                  salary: answer.roleSalary,
+                  departmentId: answer.departmentId,
+                },
+                function(err) {
+                    if(err) throw err;
+                    console.log("Your new role was successfully added!");
+                    start();
+                }  
+            )
+        })
+}
+
+/* ------------------------------ add employee ------------------------------ */
 
 function addEmployee () {
     inquirer
@@ -125,8 +172,89 @@ function addEmployee () {
 
 }
 
+/* -------------------------------- add department -------------------------------- */
+function addDepartment () {
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                message: "What is the name of the department?",
+                name: "deptName"
+            },
+        ])
+        .then(function(answer){
+            connection.query(
+                "INSERT INTO department SET?",
+                {
+                    departmentName: answer.deptName,
+                },
+                function(err) {
+                    if(err) throw err;
+                    console.log("Your department was successfully added!");
+                    start();
+                }  
+            )
+        })
+}
 
 
+
+/* -------------------------- update employee role -------------------------- */
+function updateEmployeeRole () {
+    // query the database for all items being auctioned
+    connection.query("SELECT * FROM role", function (err, results){
+        if (err) throw err;
+        // once you have the items, prompt the user for which they'd like to bid on
+        inquirer
+            .prompt([
+                {
+                    name: "empId",
+                    message: "What is the employee Id whose role you'd like to update?",
+                    type: "input"
+                },
+                {
+                    name: "choice",
+                    type: "rawlist", 
+                    choices: function() {
+                        var choiceArray = [];
+                        for (var i = 0; i < results.length; i++) {
+                            choiceArray.push(results[i].title);
+                        }
+                        return choiceArray;
+                    },
+                    message: "What role would you like to update?"
+                },
+                
+            ])
+            .then (function (answer){
+                // get the information of the chose item
+                var chosenItem;
+                for (var i = 0; i < results.length; i++) {
+                    if(results[i].title === answer.choice) {
+                        chosenItem = results[i];
+                    }
+                }
+                    connection.query(
+                        "UPDATE employees SET ? WHERE ?",
+                        [
+                            {
+                                roleId: chosenItem.id
+                            },
+                            {
+                                id: answer.empId
+                            }
+                        ],
+                        function (error) {
+                            if(error) throw (err);
+                            console.log("Update role Successfully!"); 
+                            start();
+                        }
+                    );
+                }
+               
+        );
+    });
+}
         
 
 

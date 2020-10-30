@@ -47,12 +47,12 @@ I struggled with the update employee role functionality - but it worked out
 Ryan Witherspoon
 
 ## Image
-![image info](./images/homework_10_screengrab.png)
+
 
 ## Links
 [link to GitHub!](https://github.com/ryanwit/homework_12_employee_management_system)
 
-[link to Screencastify Demo!](https://drive.google.com/file/d/1FJeGrao22fnT_hSq9LdgWKugGTYxdVLr/view)
+[link to Screencastify Demo!](https://drive.google.com/file/d/1ElSlGQtlKwi8-yxAemw68JnQNypzGP-d/view)
 
 
 # License

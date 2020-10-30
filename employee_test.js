@@ -114,9 +114,9 @@ function addRole () {
             connection.query(
                 "INSERT INTO role SET?",
                 {
-                  title: answer.roleTitle, s
+                  title: answer.roleTitle,
                   salary: answer.roleSalary,
-                  departmentId: answer.departmentId,
+                  departmentId: answer.departmentId
                 },
                 function(err) {
                     if(err) throw err;
@@ -172,6 +172,7 @@ function addEmployee () {
 
 }
 
+
 /* -------------------------------- add department -------------------------------- */
 function addDepartment () {
     inquirer
@@ -196,8 +197,6 @@ function addDepartment () {
             )
         })
 }
-
-
 
 /* -------------------------- update employee role -------------------------- */
 function updateEmployeeRole () {

@@ -55,3 +55,4 @@ SELECT role.id, role.title, department.departmentName AS department, role.salary
 SELECT * FROM employees;
 
 SELECT employees.firstName, employees.lastName, role.title, role.salary FROM employees LEFT JOIN role ON employees.roleId = role.id;
+
